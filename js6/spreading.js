@@ -73,5 +73,108 @@
   let { p: [x, { y }] } = obj; //注意,p是模式,不是变量,因此p不会被赋值.
   console.log(x,y);
 
+  let { log, sin, cos } = Math;
+  console.log(log,sin,cos);
+
+  //对数组进行对象解构
+  let arr = [1, 2, 3];
+  let {0 : first, [arr.length - 1] : last} = arr;//[]是属性名表达式
+  //let [first,,last] = arr;
+  console.log(first,last);
+
+  let {length : len} = 'hello';
+  console.log(len);
+
+  let {toString: s} = true;
+  console.log(s);
+
+  //函数参数解构赋值
+  function add([x, y]){
+    return x + y;
+  }
+  console.log(add([1, 2])); // 3
+
+  console.log([[1, 2], [3, 4]].map(([a, b]) => a + b));
+
+  //函数参数对象解构赋值，支持默认值。如果没有传入参数对象就使用默认值解构。
+  function move({x = 0, y = 0}={}) {
+    return [x, y];
+  }
+  console.log(move({x: 3, y: 8})); // [3, 8]
+  console.log(move({x: 3})); // [3, 0]
+  console.log(move({})); // [0, 0]
+  console.log(move()); // [0, 0]
+
+  //此方法与上面不同，为函数输入参数对象提供了默认值，如果没有传入对象才使用默认值，只要传入了参数对象就进行解构
+  function move({x, y} = { x: 0, y: 0 }) {
+    return [x, y];
+  }
+  console.log(move({x: 3, y: 8})); // [3, 8]
+  console.log(move({x: 3})); // [3, 0]
+  console.log(move({})); // [0, 0]
+  console.log(move()); // [0, 0]
+  //只要输入值是undefined就使用默认值
+  console.log([1, undefined, 3].map((x = 'yes') => x));// [ 1, 'yes', 3 ]
+
+  //变量申明解构模式不能使用圆括号,语法错误
+  // let { o: ({ p: p }) } = { o: { p: 2 } };
+  //console.log(p);
+
+  //赋值语句（非申明语句）的非模式部分可以使用圆括号
+  [(b)] = [3];
+  ({ p: (d) } = {p:4});
+  console.log(b,d);
+}
+
+{
+  //解构的用法
+  //1.交换赋值
+  let x = 1;
+  let y = 2;
+  [x, y] = [y, x];
+  console.log(x,y);
+
+  //2.从函数返回多个值
+  // 返回一个数组
+  function example() {
+    return [1, 2, 3];
+  }
+  let [a, b, c] = example();
+  console.log(a,b,c);
+
+  // 返回一个对象
+  function example1() {
+    return {
+      foo: 1,
+      bar: 2
+    };
+  }
+  let { foo,bar } = example1();
+  console.log(foo,bar);
+
+  //3.提取json数据
+  let jsonData = {
+    id: 42,
+    status: "OK",
+    data: [867, 5309]
+  };
+
+  let { id, status, data: number } = jsonData;
+
+  console.log(id, status, number);
+
+  //4.函数参数赋默认值
+  let jQuery = {};
+  jQuery.ajax = function (url, {
+    async = true,
+    beforeSend = function () {},
+    cache = true,
+    complete = function () {},
+    crossDomain = false,
+    global = true,
+    // ... more config
+  }) {
+    // ... do stuff
+  };
 }
 
