@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@www.wopal.net:learning/learnjs.git"
+    "url": "git@github.com:sampx/learnJS.git"
   },
   "keywords": [
     "javascript"
