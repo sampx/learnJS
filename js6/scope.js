@@ -1,30 +1,34 @@
-function f(){
+//在块级作用域内,函数申明会被提升到顶部
+f();
+function f() {
   console.log('I am outside!');
 }
 
-(function(){
-  if(false){
+//立即执行函数
+(function() {
+  if (false) {
     // 重复声明一次函数f
-    function f(){
+    function f() {
       console.log('I am inside!');
     }
   }
-  // f(); //报错,f函数未定义,在块级作用域内,函数申明会被提升到顶部
-}());
-
-f();
+  //f(); //报错,f函数未定义,在块级作用域内,函数申明会被提升到顶部
+})();
 
 {
   let a = 'secret';
-  let f = function () { //块级作用域内的函数定义建议用表达式方式
+  //f(); //报错，不会自动提升
+  let f = function() {
+    //块级作用域内的函数定义建议用表达式方式，这样不会被自动提升
     console.log('I am inside! ' + a);
   };
-  f();
+  f(); //I am inside! secret
 }
 
-if (true) { //在某些实现中,如果不加此花括号,会报语法错误
-  'use strict';
-  function f(){
+if (true) {
+  //在某些实现中,如果不加此花括号,会报语法错误
+  ('use strict');
+  function f() {
     console.log('I am another function!');
   }
 }
@@ -41,45 +45,46 @@ if (true) {
   //var PI = 3; 不可重复定义
 }
 
-//注意: const实际上保证的，并不是变量的值不得改动，而是变量指向的那个内存地址不得改动。
-const foo = {};
-
-// 为 foo 添加一个属性，可以成功
-foo.prop = 123;
-console.log(foo.prop); // 123
-
-// 将 foo 指向另一个对象，就会报错
-//foo = {}; // TypeError: "foo" is read-only
-
-//如果想将对象完全冻结,可以用:
 {
+  //注意: const实际上保证的，并不是变量的值不得改动，而是变量指向的那个内存地址不得改动。
+  const foo = {};
+
+  // 为 foo 添加一个属性，可以成功
+  foo.prop = 123;
+  console.log(foo.prop); // 123
+
+  // 将 foo 指向另一个对象，就会报错
+  //foo = {}; // TypeError: "foo" is read-only
+
+  //如果想将对象完全冻结,可以用:
+
   const bar = Object.freeze(foo);
-  'use strict';
-  console.log(bar.prop);
+  ('use strict');
+  console.log(bar.prop); //123
   bar.prop = 456; //不起作用,但也不报错
   bar.prop2 = 'new prop'; //不起作用,但也不报错
-  console.log(bar.prop);
-  console.log(bar.prop2);
+  console.log(bar.prop); //123
+  console.log(bar.prop2); //undefined
 }
 
-var  xx = 0;
+var xx = 0;
 
 //将对象彻底冻结
-var constantize = (obj) => {
+var constantize = obj => {
   Object.freeze(obj);
   xx++;
-  Object.keys(obj).forEach( (key, i) => {
-    if ( typeof obj[key] === 'object' ) {
-      constantize( obj[key] );
+  Object.keys(obj).forEach((key, i) => {
+    if (typeof obj[key] === 'object') {
+      constantize(obj[key]);
     }
   });
 };
 
-try{
+try {
   constantize(global);
-}catch(e) {
+} catch (e) {
   console.error(e.message);
-}finally{
+} finally {
   console.log(xx);
 }
 
@@ -94,12 +99,3 @@ function computeMaxCallStackSize() {
   }
 }
 console.log(computeMaxCallStackSize());
-
-
-
-
-
-
-
-
-

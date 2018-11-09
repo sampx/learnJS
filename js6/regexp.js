@@ -102,8 +102,7 @@
 
 }
 
-{
-  //提案
-  // const regex = /^\p{Decimal_Number}+$/u;
-  // console.log(regex.test('𝟏𝟐𝟑𝟜𝟝𝟞𝟩𝟪𝟫𝟬𝟭𝟮𝟯𝟺𝟻𝟼')); // true
+{  
+  const regex = /^[1][3,4,5,7,8][0-9]{9}$/;
+  console.log(regex.test('18610108880')); // true
 }
