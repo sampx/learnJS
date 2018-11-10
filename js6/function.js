@@ -99,6 +99,7 @@
   console.log(addThenMult(5));
 
   //注意 箭头函数体内this绑定为函数定义时所在对象
+
   let id = 21;
 
   function Foo({ id, name }) {
@@ -149,6 +150,7 @@
     if (n <= 1) {
       return ac2;
     }
+    if (n > 95) console.log(n, ac1, ac2);
 
     return Fibonacci2(n - 1, ac2, ac1 + ac2);
   }
@@ -164,7 +166,7 @@
   function tail_factorial(n) {
     return tailFactorial(n, 1);
   }
-  console.log(tail_factorial(50) >= Number.MAX_VALUE); // 3.0414093201713376e+64
+  //console.log(tail_factorial(10000) >= Number.MAX_VALUE); // 3.0414093201713376e+64
 
   //currying 柯里化--将多参数的函数转换成单参数的形式
   function currying(fn, n) {
@@ -174,14 +176,14 @@
   }
 
   const currying_factorial = currying(tailFactorial, 1);
-  console.log(currying_factorial(50)); // 120
+  console.log(currying_factorial(10)); // 3628800
 
   function factorial(n, total = 1) {
     if (n === 1) return total;
     return factorial(n - 1, n * total);
   }
 
-  console.log(factorial(5)); // 120
+  console.log(factorial(10000)); // 120
 
   //采用蹦床函数将递归转换为循环
 
@@ -194,7 +196,7 @@
     }
   };
 
-  //sum_origin(1, 100000) //RangeError: Maximum call stack size exceeded
+  //console.log(sum_origin(1, 100000)) //RangeError: Maximum call stack size exceeded
 
   //蹦床函数：如果是函数就执行它
   function trampoline(f) {
@@ -213,7 +215,7 @@
     }
   }
   //用蹦床函数执行
-  console.log(trampoline(sum(1, 100000)));
+  console.log(trampoline(sum(1, 1000000)));
 
   //真正的尾递归优化函数
   function tco(f) {
@@ -223,7 +225,7 @@
 
     return function accumulator() {
       accumulated.push(arguments);
-      console.log(accumulated);
+      //console.log(accumulated);
       if (!active) {
         active = true;
         while (accumulated.length) {
@@ -245,5 +247,5 @@
     }
   });
 
-  console.log(sum_tco(1, 10));
+  console.log(sum_tco(1, 10000000));
 }
